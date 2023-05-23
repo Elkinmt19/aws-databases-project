@@ -1,0 +1,68 @@
+# Some custom ignores
+*.py[cod]
+*.zip
+samples
+models
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Binaries
+*.bin
+*.pkl
+
+# Translations
+*.mo
+
+
+# pyenv
+.python-version
+
+# ------ ENVIRONMENT IGNORES -----
+# Environments
+.venv
+venv*
+venv.bak/
+ENV/
+
+# -------- VSCODE IGNORES ------
+.vscode
+
+# Jupyter ignores
+.ipynb_checkpoints
+
+# MAC OS hidden files ignores
+.DS_Store
+
+# CDK Context & Staging files
+.cdk.staging/
+cdk.out/
+
+# Testing reports
+reports/
+
+# SageMaker ignores
+.sagemaker-code-config
