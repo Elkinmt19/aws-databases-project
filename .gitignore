@@ -1,8 +1,6 @@
 # Some custom ignores
 *.py[cod]
 *.zip
-samples
-models
 
 # C extensions
 *.so
@@ -57,12 +55,3 @@ ENV/
 # MAC OS hidden files ignores
 .DS_Store
 
-# CDK Context & Staging files
-.cdk.staging/
-cdk.out/
-
-# Testing reports
-reports/
-
-# SageMaker ignores
-.sagemaker-code-config
