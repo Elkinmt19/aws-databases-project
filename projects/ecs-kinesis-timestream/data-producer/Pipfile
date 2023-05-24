@@ -1,0 +1,13 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+faker = "==18.9.0"
+boto3 = "==1.26.139"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
