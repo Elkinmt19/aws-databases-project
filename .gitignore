@@ -45,7 +45,6 @@ nosetests.xml
 .venv
 venv*
 venv.bak/
-ENV/
 
 # -------- VSCODE IGNORES ------
 .vscode
@@ -55,4 +54,8 @@ ENV/
 
 # MAC OS hidden files ignores
 .DS_Store
+
+# Terraform
+*.lock.hcl
+.terraform
 
