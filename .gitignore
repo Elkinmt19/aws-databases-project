@@ -1,6 +1,7 @@
 # Some custom ignores
 *.py[cod]
 *.zip
+test*.ipynb
 
 # C extensions
 *.so
