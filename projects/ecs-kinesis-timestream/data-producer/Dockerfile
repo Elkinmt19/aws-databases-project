@@ -7,6 +7,7 @@ RUN python -m pip install --upgrade pip
 RUN pip install pipenv
 RUN pipenv install --system --deploy
 
-COPY realtime_data_producer.py .
+COPY *.py .
+EXPOSE 8000
 
-ENTRYPOINT [ "python", "realtime_data_producer.py"]
+ENTRYPOINT ["uvicorn", "run:app", "--host", "0.0.0.0"]

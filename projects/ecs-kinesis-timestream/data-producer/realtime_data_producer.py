@@ -1,9 +1,15 @@
+import os
 import json
 import time
 import random
 import boto3
+import logging
 from faker import Faker
 from datetime import datetime
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler())
 
 fake = Faker()
 
@@ -108,12 +114,19 @@ def generate_player_performance(
     return performance
 
 
-def put_kinesis_events():
+def put_kinesis_events(max_minutes:float):
     """Put the football player events to a Kinesis Data Streams.
 
     Create and put the events into a Kinesis Data Streams.
+
+    Args:
+        max_minutes (float): Maximum minutes that the function is going 
+            to generate and put events into the Kinesis DataStream.
     """
-    events = []
+    if (max_minutes > 10):
+        raise ValueError(
+            "The maximum amount of time that the function can generate events is 10 minutes."
+        )
 
     player_name = fake.name()
 
@@ -145,44 +158,41 @@ def put_kinesis_events():
 
     started_datetime = datetime.now()
     frequency = 0.5
+    minutes = 0
     i = 0
 
     try:
-        while (True):
+        while (minutes <= max_minutes):
+            minutes = (datetime.now() - started_datetime).total_seconds()/60
             last_event = generate_player_performance(
                 player_name=player_name, 
-                minutes_played=(
-                    (datetime.now() - started_datetime).total_seconds()/60
-                ),
+                minutes_played=minutes,
                 last_event=last_event,
             )
-            events.append(last_event)
             time.sleep(frequency)
 
-            # response=client_kinesis.put_record(
-            #     StreamName=kds_name, 
-            #     Data=json.dumps(last_event), 
-            #     PartitionKey=id
-            # )
+            response=client_kinesis.put_record(
+                StreamName=kds_name, 
+                Data=json.dumps(last_event), 
+                PartitionKey=id
+            )
 
             i = i + 1
 
-            # print(
-            #     "Total ingested:" + 
-            #     str(i) +
-            #     ",ReqID:" + 
-            #     response['ResponseMetadata']['RequestId'] +
-            #     ",HTTPStatusCode:" + 
-            #     str(response['ResponseMetadata']['HTTPStatusCode'])
-            # )
+            logger.info(
+                "Total ingested:" + 
+                str(i) +
+                ",ReqID:" + 
+                response['ResponseMetadata']['RequestId'] +
+                ",HTTPStatusCode:" + 
+                str(response['ResponseMetadata']['HTTPStatusCode'])
+            )
     except KeyboardInterrupt:
-        print("The events ingestion process has been stopped.")
-
-    return events
+        logger.warn("The events ingestion process has been stopped.")
 
 def main():
     """Entrypoint of the application."""
-    _ = put_kinesis_events()
+    _ = put_kinesis_events(max_minutes=10)
 
 
 if __name__ == "__main__":
