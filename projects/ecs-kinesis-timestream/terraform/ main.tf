@@ -1,6 +1,6 @@
 # VPC Configuration
 resource "aws_vpc" "aws-vpc" {
-    cidr_block           = "10.10.0.0/16"
+    cidr_block = "10.10.0.0/16"
     enable_dns_hostnames = true
     enable_dns_support   = true
     tags = {
@@ -54,4 +54,20 @@ resource "aws_route_table_association" "public" {
 	count = length(var.public_subnets)
 	subnet_id = element(aws_subnet.public.*.id, count.index)
 	route_table_id = aws_route_table.public.id
+}
+
+# ECS Cluster configuration
+resource "aws_ecs_cluster" "aws-ecs-cluster" {
+	name = "${var.project_name}-${var.env}-cluster"
+	tags = {
+		name = "${var.project_name}-ecs"
+		env = var.env
+	}
+}
+resource "aws_cloudwatch_log_group" "log-group" {
+	name = "${var.project_name}-${var.env}-logs"
+	tags = {
+		name = var.project_name
+		env = var.env
+	}
 }

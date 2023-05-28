@@ -7,4 +7,5 @@ Transversal services
 
 ```bash
 terraform plan -var-file="env/qa/qa.tfvars"
+terraform apply -auto-approve
 ```
