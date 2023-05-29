@@ -55,19 +55,45 @@ resource "aws_route_table_association" "public" {
 	subnet_id = element(aws_subnet.public.*.id, count.index)
 	route_table_id = aws_route_table.public.id
 }
+resource "aws_eip" "public" {
+	count = length(var.public_subnets)
+	vpc = true
+	depends_on = [aws_internet_gateway.aws-igw]
+}
+resource "aws_nat_gateway" "aws-ngw" {
+	count = length(var.public_subnets)
+	allocation_id = element(aws_eip.public.*.id, count.index)
+	subnet_id = element(aws_subnet.public.*.id, count.index)
+	tags = {
+		name = "${var.project_name}-ecs"
+		env = var.env
+	}
+}
+resource "aws_route_table" "private" {
+	count = length(var.private_subnets)
+	vpc_id = aws_vpc.aws-vpc.id
+	tags = {
+		name = "${var.project_name}-routing-table-private"
+		env = var.env
+	}
+}
+resource "aws_route" "private" {
+	count = length(var.private_subnets)
+	route_table_id = element(aws_route_table.private.*.id, count.index)
+	destination_cidr_block = "0.0.0.0/0"
+	gateway_id = element(aws_nat_gateway.aws-ngw.*.id, count.index)
+}
+resource "aws_route_table_association" "private" {
+	count = length(var.private_subnets)
+	subnet_id = element(aws_subnet.private.*.id, count.index)
+	route_table_id = element(aws_route_table.private.*.id, count.index)
+}
 
 # ECS Cluster configuration
 resource "aws_ecs_cluster" "aws-ecs-cluster" {
 	name = "${var.project_name}-${var.env}-cluster"
 	tags = {
 		name = "${var.project_name}-ecs"
-		env = var.env
-	}
-}
-resource "aws_cloudwatch_log_group" "log-group" {
-	name = "${var.project_name}-${var.env}-logs"
-	tags = {
-		name = var.project_name
 		env = var.env
 	}
 }

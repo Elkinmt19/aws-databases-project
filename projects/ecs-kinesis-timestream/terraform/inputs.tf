@@ -6,6 +6,10 @@ variable "env" {
     type = string
     default = "qa"
 }
+variable "aws_region" {
+    type = string
+    default = "us-east-1"
+}
 variable "private_subnets" {
     type = list(string)
     default = ["10.10.192.0/19","10.10.224.0/19"]
