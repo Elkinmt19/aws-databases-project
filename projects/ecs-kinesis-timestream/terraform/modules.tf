@@ -10,3 +10,10 @@ module "data_producer_module" {
     private_subnets = aws_subnet.private.*.id
     public_subnets = aws_subnet.public.*.id
 }
+
+module "kinesis_datastream_module" {
+    source = "../kinesis-datastream/terraform"
+    project_name = var.project_name
+    env = var.env
+    kds_name = "football_player_stream"
+}
