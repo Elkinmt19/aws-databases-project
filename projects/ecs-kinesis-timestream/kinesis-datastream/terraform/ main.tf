@@ -4,10 +4,10 @@ resource "aws_kinesis_stream" "kinesis_stream" {
 	retention_period = 24
 
 	shard_level_metrics = [
-    "IncomingBytes",
-    "IncomingRecords",
-    "OutgoingBytes",
-    "OutgoingRecords",
+		"IncomingBytes",
+		"IncomingRecords",
+		"OutgoingBytes",
+		"OutgoingRecords",
 	]
 	stream_mode_details {
 		stream_mode = "ON_DEMAND"
