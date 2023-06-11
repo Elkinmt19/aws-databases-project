@@ -130,8 +130,10 @@ def put_kinesis_events(max_minutes:float):
 
     player_name = fake.name()
 
+    id = "id" + str(random.randint(1665586, 8888888))
+
     last_event = {
-        "id": 'id' + str(random.randint(1665586, 8888888)),
+        "id": id,
         "player_name": player_name,
         "minutes_played": 0,
         "goals": 0,
@@ -192,7 +194,7 @@ def put_kinesis_events(max_minutes:float):
 
 def main():
     """Entrypoint of the application."""
-    _ = put_kinesis_events(max_minutes=10)
+    _ = put_kinesis_events(max_minutes=5)
 
 
 if __name__ == "__main__":
