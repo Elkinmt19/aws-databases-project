@@ -8,6 +8,13 @@ data "aws_iam_policy_document" "assume_role_policy" {
         }
     }
 }
+data "aws_iam_policy_document" "kds_put_event_role_policy" {
+    statement {
+        effect = "Allow"
+        actions = ["kinesis:PutRecord"]
+        resources = [var.kds_arn]
+    }
+}
 
 # Task Definition Configuration
 data "template_file" "env_vars" {
