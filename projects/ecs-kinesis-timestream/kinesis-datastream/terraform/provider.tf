@@ -1,5 +1,5 @@
 provider "aws" {
-	profile = "poc_personalize"
+	profile = "default"
 	region = "us-east-1"
 }
 terraform {
@@ -11,11 +11,11 @@ terraform {
 		}
 	}
 	backend "s3" {
-		bucket = "terraform-state-backend-aws-database-project"
+		bucket = "terraform-state-backend-ecs-kinesis-timestream"
 		key = "ecs-kinesis-timestream/terraform.tfstate"
 		region = "us-east-1"
 		dynamodb_table = "terraform_state"
 		encrypt = true
-		profile = "poc_personalize"
+		profile = "default"
 	}
 }
