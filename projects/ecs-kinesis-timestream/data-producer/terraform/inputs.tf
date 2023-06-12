@@ -32,5 +32,4 @@ variable "public_subnets" {
 }
 variable "kds_arn" {
     type = string
-    default = "football_player_stream"
 }
