@@ -22,5 +22,19 @@ variable "availability_zones" {
     type = list(string)
     default = ["us-east-1a","us-east-1b"]
 }
-
-
+variable "data_producer_service" {
+    type = string
+    default = "data-producer"
+}
+variable "kds_name" {
+    type = string
+    default = "football_player_stream"
+}
+variable "timestream_db_name" {
+    type = string
+    default = "football_player_timestream_db"
+}
+variable "timestream_table_name" {
+    type = string
+    default = "football_player_timestream_table"
+}

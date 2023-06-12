@@ -1,5 +1,10 @@
 project_name = "ecs-kinesis-timestream"
 env = "qa"
+aws_region = "us-east-1"
 private_subnets = ["10.10.192.0/19","10.10.224.0/19"]
 public_subnets = ["10.10.0.0/17","10.10.128.0/18"]
 availability_zones = ["us-east-1a","us-east-1b"]
+data_producer_service = "data-producer"
+kds_name = "football_player_stream"
+timestream_db_name = "football_player_timestream_db"
+timestream_table_name = "football_player_timestream_table"

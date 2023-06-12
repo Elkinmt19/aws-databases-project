@@ -13,7 +13,7 @@ resource "aws_kinesis_stream" "kinesis_stream" {
 		stream_mode = "ON_DEMAND"
 	}
     tags = {
-	name = var.project_name
-	env = var.env
+		name = var.project_name
+		env = var.env
     }
 }
