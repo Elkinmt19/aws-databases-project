@@ -30,3 +30,7 @@ variable "public_subnets" {
     type = list(string)
     default = ["10.10.0.0/17","10.10.128.0/18"]
 }
+variable "kds_arn" {
+    type = string
+    default = "football_player_stream"
+}
