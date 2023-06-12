@@ -9,6 +9,7 @@ module "data_producer_module" {
     vpc_id = aws_vpc.aws-vpc.id
     private_subnets = aws_subnet.private.*.id
     public_subnets = aws_subnet.public.*.id
+    kds_arn = module.kinesis_datastream_module.kinesis_stream_arn
 }
 
 module "kinesis_datastream_module" {
