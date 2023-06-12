@@ -28,3 +28,14 @@ module "timestream_module" {
     timestream_db_name = var.timestream_db_name
     timestream_table_name = var.timestream_table_name
 }
+
+# Lambda Function Configuration
+module "lambda_function_module" {
+    source = "../lambda/terraform"
+    project_name = var.project_name
+    env = var.env
+    lambda_function_name = var.lambda_function_name
+    timestream_db_name = module.timestream_module.timestream_db_name
+    timestream_table_name = module.timestream_module.timestream_table_name
+    kds_arn = module.kinesis_datastream_module.kinesis_stream_arn
+}

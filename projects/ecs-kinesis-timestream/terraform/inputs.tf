@@ -38,3 +38,7 @@ variable "timestream_table_name" {
     type = string
     default = "football_player_timestream_table"
 }
+variable "lambda_function_name" {
+    type = string
+    default = "football_player_timestream_lambda"
+}
