@@ -37,5 +37,6 @@ module "lambda_function_module" {
     lambda_function_name = var.lambda_function_name
     timestream_db_name = module.timestream_module.timestream_db_name
     timestream_table_name = module.timestream_module.timestream_table_name
+    timestream_table_arn = module.timestream_module.timestream_table_arn
     kds_arn = module.kinesis_datastream_module.kinesis_stream_arn
 }

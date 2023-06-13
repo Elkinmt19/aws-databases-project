@@ -109,7 +109,8 @@ def generate_player_performance(
         ),
         "fouls_drawn": fake.random_int(
             min=last_event["fouls_drawn"], max=9
-        )
+        ),
+        "timestamp": str(datetime.now()),
     }
     return performance
 
@@ -155,7 +156,8 @@ def put_kinesis_events(max_minutes:float):
         "duels_won": 0,
         "aerial_duels_won": 0,
         "recoveries": 0,
-        "fouls_drawn": 0
+        "fouls_drawn": 0,
+        "timestamp": str(datetime.now()),
     }
 
     started_datetime = datetime.now()

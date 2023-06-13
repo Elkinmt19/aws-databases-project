@@ -32,6 +32,22 @@ data "aws_iam_policy_document" "lambda_get_kds_events_role_policy" {
         resources = [var.kds_arn]
     }
 }
+data "aws_iam_policy_document" "lambda_insert_timestream_role_policy" {
+    statement {
+        effect = "Allow"
+        actions = [
+            "timestream:WriteRecords",
+        ]
+        resources = [var.timestream_table_arn]
+    }
+    statement {
+        effect = "Allow"
+        actions = [
+            "timestream:DescribeEndpoints",
+        ]
+        resources = ["*"]
+    }
+}
 
 # Lambda Function Configuration
 data "archive_file" "lambda_code" {

@@ -18,6 +18,9 @@ variable "timestream_table_name" {
     type = string
     default = "football_player_timestream_table"
 }
+variable "timestream_table_arn" {
+    type = string
+}
 variable "kds_arn" {
     type = string
 }

@@ -23,6 +23,14 @@ resource "aws_iam_policy" "lambda_get_kds_events_role_policy" {
         env = var.env
     }
 }
+resource "aws_iam_policy" "lambda_insert_timestream_role_policy" {
+    name = "${var.project_name}-lambda-insert-timestream-policy"
+    policy = data.aws_iam_policy_document.lambda_insert_timestream_role_policy.json
+    tags = {
+        name = "${var.project_name}-lambda-iam-policy"
+        env = var.env
+    }
+}
 resource "aws_iam_role_policy_attachment" "lambda_logging_role_policy_attach" {
     role = aws_iam_role.lambdaExecutionRole.name
     policy_arn = aws_iam_policy.lambda_logging_role_policy.arn
@@ -30,6 +38,10 @@ resource "aws_iam_role_policy_attachment" "lambda_logging_role_policy_attach" {
 resource "aws_iam_role_policy_attachment" "lambda_get_kds_events_role_policy_attach" {
     role = aws_iam_role.lambdaExecutionRole.name
     policy_arn = aws_iam_policy.lambda_get_kds_events_role_policy.arn
+}
+resource "aws_iam_role_policy_attachment" "lambda_insert_timestream_role_policy_attach" {
+    role = aws_iam_role.lambdaExecutionRole.name
+    policy_arn = aws_iam_policy.lambda_insert_timestream_role_policy.arn
 }
 
 # Lambda Function Configuration
