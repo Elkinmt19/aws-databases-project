@@ -45,7 +45,7 @@ resource "aws_iam_role_policy_attachment" "lambda_insert_timestream_role_policy_
 }
 
 # Lambda Function Configuration
-    resource "aws_lambda_function" "lambda_get_kds_events_function" {
+resource "aws_lambda_function" "lambda_get_kds_events_function" {
     function_name = var.lambda_function_name
     filename = "../lambda/lambda_function_payload.zip"
     source_code_hash = data.archive_file.lambda_code.output_base64sha256
