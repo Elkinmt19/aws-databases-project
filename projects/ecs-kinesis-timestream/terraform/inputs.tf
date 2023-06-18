@@ -42,3 +42,7 @@ variable "lambda_function_name" {
     type = string
     default = "football_player_timestream_lambda"
 }
+variable "grafana_service" {
+    type = string
+    default = "grafana"
+}
