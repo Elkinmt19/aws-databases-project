@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  grafana:
+    image: grafana/grafana:8.2.5
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      - GF_SERVER_ROOT_URL=http://my.grafana.server/
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-iot-twinmaker-app,grafana-timestream-datasource
+    ports:
+      - '3000:3000'

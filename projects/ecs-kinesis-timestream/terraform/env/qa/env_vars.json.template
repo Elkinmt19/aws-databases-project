@@ -1,0 +1,10 @@
+[
+	{
+		"name": "KDS_NAME",
+		"value": "value"
+	},
+	{
+		"name": "AWS_REGION",
+		"value": "value"
+	}
+]
