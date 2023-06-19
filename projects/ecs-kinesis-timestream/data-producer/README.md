@@ -31,7 +31,7 @@ This application can be used in two ways:
 
     - Build the container image using the docker build command.
         ```bash
-        docker build -t <name-name:tag> .
+        docker build -t <image-name:tag> .
         ```
     - Execute the container the docker run command.
         ```bash
