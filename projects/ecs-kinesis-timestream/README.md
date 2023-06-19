@@ -19,6 +19,9 @@ This section shows a diagram of the project architecture. It shows how AWS servi
 - [AWS Lambda](https://aws.amazon.com/lambda/?nc1=h_ls): AWS Lambda is a serverless, event-driven compute service that lets you run code for virtually any type of application or backend service without provisioning or managing servers.
 
 - [Amazon Timestream](https://aws.amazon.com/timestream/): Amazon Timestream is a fast, scalable, and serverless time-series database service that makes it easier to store and analyze trillions of events per day up to 1,000 times faster.
+
+- [Amazon Virtual Private Cloud (VPC)](https://aws.amazon.com/vpc/?nc1=h_ls): Amazon Virtual Private Cloud (Amazon VPC) gives you full control over your virtual networking environment, including resource placement, connectivity, and security.
+
 ## **Tools** :wrench:
 - [Terraform](https://www.terraform.io/): HashiCorp Terraform is an infrastructure as code tool that lets you define both cloud and on-prem resources in human-readable configuration files that you can version, reuse, and share.
 
