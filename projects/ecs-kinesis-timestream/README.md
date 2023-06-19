@@ -10,6 +10,8 @@ This section shows a diagram of the project architecture. It shows how AWS servi
 </p>
 
 ## **Services** :space_invader:
+This section of the documentation gives an explanation about all the AWS services that were used in this project.
+
 - [Amazon Elastic Container Service (ECS)](https://aws.amazon.com/ecs/): Amazon Elastic Container Service (Amazon ECS) is a fully managed container orchestration service that simplifies your deployment, management, and scaling of containerized applications.
 
 - [Amazon Elastic Container Registry (ECR)](https://aws.amazon.com/es/ecr/): Amazon Elastic Container Registry (Amazon ECR) is a fully managed container registry offering high-performance hosting, so you can reliably deploy application images and artifacts anywhere.
@@ -23,6 +25,8 @@ This section shows a diagram of the project architecture. It shows how AWS servi
 - [Amazon Virtual Private Cloud (VPC)](https://aws.amazon.com/vpc/?nc1=h_ls): Amazon Virtual Private Cloud (Amazon VPC) gives you full control over your virtual networking environment, including resource placement, connectivity, and security.
 
 ## **Tools** :wrench:
+This section of the documentation mention all the tools an technologies that were used in this project.
+
 - [Terraform](https://www.terraform.io/): HashiCorp Terraform is an infrastructure as code tool that lets you define both cloud and on-prem resources in human-readable configuration files that you can version, reuse, and share.
 
 - [Python](https://www.python.org/): Python is an interpreted, object-oriented, high-level programming language with dynamic semantics. Its high-level built in data structures, combined with dynamic typing and dynamic binding, make it very attractive for Rapid Application Development, as well as for use as a scripting or glue language to connect existing components together.
