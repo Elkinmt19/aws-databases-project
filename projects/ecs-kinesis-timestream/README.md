@@ -20,6 +20,13 @@ This section shows a diagram of the project architecture. It shows how AWS servi
 
 - [Amazon Timestream](https://aws.amazon.com/timestream/): Amazon Timestream is a fast, scalable, and serverless time-series database service that makes it easier to store and analyze trillions of events per day up to 1,000 times faster.
 ## **Tools** :wrench:
+- [Terraform](https://www.terraform.io/): HashiCorp Terraform is an infrastructure as code tool that lets you define both cloud and on-prem resources in human-readable configuration files that you can version, reuse, and share.
+
+- [Python](https://www.python.org/): Python is an interpreted, object-oriented, high-level programming language with dynamic semantics. Its high-level built in data structures, combined with dynamic typing and dynamic binding, make it very attractive for Rapid Application Development, as well as for use as a scripting or glue language to connect existing components together.
+
+- [Grafana](https://grafana.com/): Grafana is an open source interactive data-visualization platform, developed by Grafana Labs, which allows users to see their data via charts and graphs that are unified into one dashboard (or multiple dashboards!) for easier interpretation and understanding. 
+
+- [GitHub Actions](https://github.com/features/actions): GitHub Actions is a continuous integration and continuous delivery (CI/CD) platform that allows you to automate your build, test, and deployment pipeline. You can create workflows that build and test every pull request to your repository, or deploy merged pull requests to production.
 
 ## **Setup** :rocket:
 
