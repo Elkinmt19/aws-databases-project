@@ -33,7 +33,11 @@ This application can be used in two ways:
         ```bash
         docker build -t <image-name:tag> .
         ```
-    - Execute the container the docker run command.
+    - Execute the container using the docker run command.
         ```bash
         docker run --rm --name <container-name> -p 8080:8080 <image-name:tag>
+        ```
+    - Stop the container using the docker stop command.
+        ```bash
+        docker stop <container-name>
         ```
