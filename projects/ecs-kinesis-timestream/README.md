@@ -1,4 +1,4 @@
-# <p align="center"> :octocat: **ECS + Kinesis + Timestream Integration Project** :octocat: </p>
+# <p align="center"> <img src="assets/imgs/database.gif" width="5%"/> **ECS + Kinesis + Timestream Integration Project** <img src="assets/imgs/database.gif" width="5%"/> </p>
 
 This project implements a Data Pipeline that takes real-time events and inserts them into an `Amazon Timestream` database and then these events are visualized using `Grafana`. This whole project was built on top of `Terraform` as an IaC (Infrastructure as Code) tool and using AWS services.
 
