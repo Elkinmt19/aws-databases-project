@@ -1,13 +1,13 @@
 # <p align="center"> <img src="assets/imgs/ecs_logo.png" width="5%"/> **Data Producer** <img src="assets/imgs/ecs_logo.png" width="5%"/> </p>
 
-This service was built on top of `Amazon ECS`, its main functionality is to randomly generate events in a time windows that is specify by the user of the application as a parameter.
+This service was built on top of `Amazon ECS`, its main functionality is to generate events randomly in a time window that is specified by the user of the application as a parameter.
 
 <p align="center">
     <img src="assets/imgs/python_logo.png" width="25%"/>
     <img src="assets/imgs/fastapi_logo.png" width="50%"/>
 </p>
 
-This application was developed using Python and some of its most popular libraries as `Boto3`, `Faker` and `FastAPI`. The data generation is controlled using a simple REST API created using FastAPI framework. The data generated is instantly sent to a Kinesis Data Stream for future processing.
+This application has been developed using Python and some of its most popular libraries such as `Boto3`, `Faker` and `FastAPI`. Data generation is controlled by a simple REST API created with the FastAPI framework. The generated data is instantly sent to a Kinesis Data Stream for further processing.
 
 ## **Getting Started** :checkered_flag:
 This application can be used in two ways:
