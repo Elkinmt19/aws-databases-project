@@ -33,7 +33,9 @@ jobs:
         - name: Terraform Init
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
-            terraform init
+            terraform init -backend-config="bucket=${{ vars.TFSTATE_BUCKET }}" \
+            -backend-config="key=${{ vars.TFSTATE_KEY }}" \
+            -backend-config="region=${{ vars.TFSTATE_REGION }}" 
 
         - name: Terraform Apply
           id: terraform-apply
