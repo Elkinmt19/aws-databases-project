@@ -1,0 +1,53 @@
+name: Terraform Deploy with GitHub Actions
+
+on:
+    push:
+        branches:
+            - deploy   
+
+env:
+  PROJECT_DIR: aws-databases-project/projects/ecs-kinesis-timestream
+        
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+            
+        - name: Set up Terraform
+          uses: hashicorp/setup-terraform@v1
+          with:
+            terraform_version: 1.4.6
+            terraform_wrapper: false
+
+        - name: Terraform Init
+          run: |
+            cd ${{ env.PROJECT_DIR }}/terraform
+            terraform init
+
+        - name: Terraform Apply
+          id: terraform-apply
+          run: |
+            cd ${{ env.PROJECT_DIR }}/terraform
+            terraform apply -auto-approve
+
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ secrets.AWS_REGION }}
+    
+        - name: Build and Push Docker Image for ECR
+          run: | 
+            cd ${{ env.PROJECT_DIR }}/data-producer
+            ECR_URL=$(terraform output -raw ecr_repository_url)
+            echo $ECR_URL
+            
+            cd ../modules/ecr 
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_URL
+            docker build -t "$ECR_URL:latest" .
+            docker push "$ECR_URL:latest"
