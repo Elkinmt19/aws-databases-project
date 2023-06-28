@@ -6,7 +6,9 @@ on:
             - deploy   
 
 env:
+  PROJECT_NAME: "ecs-kinesis-timestream"
   PROJECT_DIR: projects/ecs-kinesis-timestream
+  ENV: "qa"
         
 
 jobs:
@@ -33,9 +35,9 @@ jobs:
         - name: Terraform Init
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
-            terraform init -backend-config="bucket=${{ vars.TFSTATE_BUCKET }}" \
-            -backend-config="key=${{ vars.TFSTATE_KEY }}" \
-            -backend-config="region=${{ vars.TFSTATE_REGION }}" 
+            terraform init -backend-config="bucket=tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
+            -backend-config="key=terraform.tfstate" \
+            -backend-config="region=${{ secrets.AWS_REGION }}" 
 
         - name: Terraform Apply
           id: terraform-apply
