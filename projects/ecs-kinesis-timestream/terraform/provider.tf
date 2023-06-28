@@ -1,7 +1,3 @@
-provider "aws" {
-  profile = "default"
-  region  = "us-east-1"
-}
 terraform {
   required_version = "1.4.6"
   required_providers {
@@ -11,11 +7,5 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "tfstate-backend-157098863241-qa"
-    key    = "terraform.tfstate"
-    region = "us-east-1"
-    #dynamodb_table = "terraform_state"
-    encrypt = true
-    profile = "default"
   }
 }

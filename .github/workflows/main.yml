@@ -6,8 +6,8 @@ on:
             - deploy   
 
 env:
-  PROJECT_NAME: "ecs-kinesis-timestream"
   PROJECT_DIR: projects/ecs-kinesis-timestream
+  PROJECT_NAME: "ecs-kinesis-timestream"
   ENV: "qa"
         
 
@@ -31,7 +31,13 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ${{ secrets.AWS_REGION }}
-            
+        - name: Create Backend S3 Bucket for Terraform
+          run: |
+            aws s3api create-bucket \
+            --bucket "tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
+            --region ${{ secrets.AWS_REGION }} \
+            --create-bucket-configuration LocationConstraint=${{ secrets.AWS_REGION }} 
+
         - name: Terraform Init
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform

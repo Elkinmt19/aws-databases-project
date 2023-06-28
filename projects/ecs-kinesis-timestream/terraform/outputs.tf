@@ -1,8 +1,3 @@
-output "account_id" {
-  description = "Selected AWS Account ID"
-  value       = data.aws_caller_identity.current.account_id
-}
-
 output "vpc_id" {
   value = aws_vpc.aws-vpc.id
 }
