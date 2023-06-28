@@ -70,4 +70,4 @@ jobs:
           id: terraform-destroy
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
-            terraform destroy
+            terraform destroy -auto-approve
