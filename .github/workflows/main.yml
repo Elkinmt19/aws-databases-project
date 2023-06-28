@@ -6,7 +6,7 @@ on:
             - deploy   
 
 env:
-  PROJECT_DIR: aws-databases-project/projects/ecs-kinesis-timestream
+  PROJECT_DIR: projects/ecs-kinesis-timestream
         
 
 jobs:
