@@ -1,4 +1,4 @@
-name: Terraform Deploy with GitHub Actions
+name: Terraform Destroy with GitHub Actions
 
 on:
     push:
