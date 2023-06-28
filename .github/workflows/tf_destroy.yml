@@ -3,7 +3,7 @@ name: Terraform Destroy with GitHub Actions
 on:
     push:
         branches:
-            - destroy   
+            - deploy   
 
 env:
   PROJECT_DIR: projects/ecs-kinesis-timestream
