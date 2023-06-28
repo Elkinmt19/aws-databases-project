@@ -78,10 +78,10 @@ jobs:
             docker build -t "$ECR_URL_DATA_PRODUCER:latest" .
             docker push "$ECR_URL_DATA_PRODUCER:latest"
 
-        - name: Build and Push Docker Image for ECR
+        - name: Build and Push Docker Image for Grafana
           run: | 
             cd ${{ env.PROJECT_DIR }}/terraform
-            ECR_URL_GRAFANA=$(terraform output -raw aws_ecr_repository_url_data_producer)
+            ECR_URL_GRAFANA=$(terraform output -raw aws_ecr_repository_url_grafana)
             echo $ECR_URL_GRAFANA
             
             docker pull grafana/grafana:8.2.5
