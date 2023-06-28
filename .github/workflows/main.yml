@@ -36,7 +36,7 @@ jobs:
             aws s3api create-bucket \
             --bucket "tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
             --region ${{ secrets.AWS_REGION }} \
-            --create-bucket-configuration LocationConstraint=${{ secrets.AWS_REGION }} 
+            --create-bucket-configuration LocationConstraint="${{ secrets.AWS_REGION }}"
 
         - name: Terraform Init
           run: |
