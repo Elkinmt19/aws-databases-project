@@ -7,9 +7,9 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "terraform-state-backend-ecs-kinesis-timestream"
+    bucket = "tfstate-backend-${var.project_name}-${data.aws_caller_identity.current.account_id}-${var.env}"
     key    = "ecs-kinesis-timestream/terraform.tfstate"
-    region = "us-east-1"
+    region = var.aws_region
     #dynamodb_table = "terraform_state"
     encrypt = true
     #profile        = "default"
