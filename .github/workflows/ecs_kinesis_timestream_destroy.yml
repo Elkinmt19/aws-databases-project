@@ -51,7 +51,6 @@ jobs:
         - name: Delete Container images and Terraform State from S3
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
-            aws s3 rm "s3://tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" --recursive
             sh scripts/delete_ecr_images.sh
 
         - name: Terraform destroy
