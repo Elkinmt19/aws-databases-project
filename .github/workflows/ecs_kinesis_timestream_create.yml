@@ -64,7 +64,7 @@ jobs:
       - name: Upload Terraform State to S3
         run: |
           cd ${{ env.PROJECT_DIR }}/terraform
-          aws s3 cp terraform.tfstate "s3://tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}/"
+          aws s3 cp terraform.tfstate s3://tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}/
 
       - name: Build and Push Docker Image for Data Producer
         run: | 
