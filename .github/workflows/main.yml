@@ -1,9 +1,10 @@
 name: Terraform Deploy with GitHub Actions
 
 on:
-    push:
-        branches:
-            - deploy   
+  workflow_dispatch:
+    #push:
+    #    branches:
+    #        - deploy   
 
 env:
   PROJECT_DIR: projects/ecs-kinesis-timestream
@@ -41,18 +42,16 @@ jobs:
             echo "[default]" >> $HOME/.aws/config
             echo "region=${{ secrets.AWS_REGION }}" >> $HOME/.aws/config
     
-        - name: Create Backend S3 Bucket for Terraform
-          run: |
-            aws s3api create-bucket \
-            --bucket "tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
-            --region ${{ secrets.AWS_REGION }} \
+        # - name: Create Backend S3 Bucket for Terraform
+        #   run: |
+        #     aws s3api create-bucket \
+        #     --bucket "tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
+        #     --region ${{ secrets.AWS_REGION }} \
 
         - name: Terraform Init
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
-            terraform init -backend-config="bucket=tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
-            -backend-config="key=terraform.tfstate" \
-            -backend-config="region=${{ secrets.AWS_REGION }}" 
+            terraform init 
 
         - name: Terraform Plan
           run: |
@@ -65,6 +64,12 @@ jobs:
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
             terraform apply -auto-approve
+
+        - name: Upload Terraform State
+          uses: actions/upload-artifact@v3
+          with:
+            name: terraform.tfstate
+            path: projects/ecs-kinesis-timestream/terraform/terraform.tfstate
 
     
         - name: Build and Push Docker Image for ECR
