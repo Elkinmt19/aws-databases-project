@@ -59,6 +59,3 @@ venv.bak/
 # Terraform
 *.lock.hcl
 .terraform
-
-# Env variables
-env_vars.json

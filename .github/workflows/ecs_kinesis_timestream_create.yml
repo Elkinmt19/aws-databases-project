@@ -1,0 +1,90 @@
+name: Deploy ECS + Kinesis + Timestream project
+
+on: workflow_dispatch
+
+env:
+  PROJECT_DIR: projects/ecs-kinesis-timestream
+  PROJECT_NAME: "ecs-kinesis-timestream"
+  ENV: "pdn"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.4.6
+          terraform_wrapper: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set up AWS CLI configuration
+        run: |
+          mkdir -p $HOME/.aws
+          echo "[default]" >> $HOME/.aws/credentials
+          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $HOME/.aws/credentials
+          echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $HOME/.aws/credentials
+          echo "[default]" >> $HOME/.aws/config
+          echo "region=${{ secrets.AWS_REGION }}" >> $HOME/.aws/config
+    
+      - name: Create Backend S3 Bucket for Terraform
+        run: |
+          aws s3api create-bucket \
+          --bucket "tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
+          --region ${{ secrets.AWS_REGION }} \
+
+      - name: Terraform Init
+        run: |
+          cd ${{ env.PROJECT_DIR }}/terraform
+          terraform init -backend-config="bucket=tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
+          -backend-config="key=terraform.tfstate" \
+          -backend-config="region=${{ secrets.AWS_REGION }}" 
+
+      - name: Terraform Plan
+        run: |
+          cd ${{ env.PROJECT_DIR }}/terraform
+          terraform plan -var-file="env/${{ env.ENV }}/${{ env.ENV }}.tfvars"
+
+      - name: Terraform Apply
+        id: terraform-apply
+        run: |
+          cd ${{ env.PROJECT_DIR }}/terraform
+          terraform apply -auto-approve
+
+      - name: Upload Terraform State to S3
+        run: |
+          cd ${{ env.PROJECT_DIR }}/terraform
+          aws s3 cp terraform.tfstate\
+          "s3://tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}/"
+
+      - name: Build and Push Docker Image for Data Producer
+        run: | 
+          cd ${{ env.PROJECT_DIR }}/terraform
+          ECR_URL_DATA_PRODUCER=$(terraform output -raw aws_ecr_repository_url_data_producer)
+          echo $ECR_URL_DATA_PRODUCER
+
+          cd ../data-producer 
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_URL_DATA_PRODUCER
+          docker build -t "$ECR_URL_DATA_PRODUCER:latest" .
+          docker push "$ECR_URL_DATA_PRODUCER:latest"
+
+      - name: Build and Push Docker Image for Grafana
+        run: | 
+          cd ${{ env.PROJECT_DIR }}/terraform
+          ECR_URL_GRAFANA=$(terraform output -raw aws_ecr_repository_url_grafana)
+          echo $ECR_URL_GRAFANA
+            
+          docker pull grafana/grafana:8.2.5
+          docker tag grafana/grafana:8.2.5 $ECR_URL_GRAFANA:latest
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin $ECR_URL_GRAFANA
+          docker push "$ECR_URL_GRAFANA:latest"
