@@ -1,9 +1,6 @@
-name: Terraform Destroy with GitHub Actions
+name: Destroy ECS + Kinesis + Timestream project
 
-on:
-    push:
-        branches:
-            - deploy   
+on: workflow_dispatch
 
 env:
   PROJECT_DIR: projects/ecs-kinesis-timestream
@@ -41,30 +38,23 @@ jobs:
             echo "[default]" >> $HOME/.aws/config
             echo "region=${{ secrets.AWS_REGION }}" >> $HOME/.aws/config
     
-        - name: Create Backend S3 Bucket for Terraform
+        - name: Download Terraform State from S3
           run: |
-            aws s3api create-bucket \
-            --bucket "tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
-            --region ${{ secrets.AWS_REGION }} \
+            cd ${{ env.PROJECT_DIR }}/terraform
+            aws s3 cp "s3://tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}/terraform.tfstate" .
 
         - name: Terraform Init
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
             terraform init -backend-config="bucket=tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
             -backend-config="key=terraform.tfstate" \
-            -backend-config="region=${{ secrets.AWS_REGION }}" 
+            -backend-config="region=${{ secrets.AWS_REGION }}"
 
-        - name: Terraform Plan
+        - name: Delete Container images and Terraform State from S3
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
-            terraform plan -var-file="env/${{ env.ENV }}/${{ env.ENV }}.tfvars"
-
-
-        - name: Terraform Apply
-          id: terraform-apply
-          run: |
-            cd ${{ env.PROJECT_DIR }}/terraform
-            terraform apply -auto-approve
+            aws s3 rm "s3://tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" --recursive
+            sh scripts/delete_ecr_images.sh
 
         - name: Terraform destroy
           id: terraform-destroy
