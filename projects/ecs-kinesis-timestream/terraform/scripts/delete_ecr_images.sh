@@ -4,5 +4,5 @@ repositories=$(aws ecr describe-repositories --query 'repositories[].repositoryN
 
 for repository in $repositories; do
     echo "Deleting images from repository: $repository"
-    aws ecr batch-delete-image --repository-name "$repository" --filter '{"tagStatus": "ANY"}'
+    aws ecr batch-delete-image --repository-name "$repository" --image-ids imageTag=latest
 done
