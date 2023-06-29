@@ -41,7 +41,7 @@ jobs:
         - name: Download Terraform State from S3
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
-            aws s3 cp "s3://tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}/terraform.tfstate" .
+            aws s3 cp s3://tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}/terraform.tfstate .
 
         - name: Terraform Init
           run: |
