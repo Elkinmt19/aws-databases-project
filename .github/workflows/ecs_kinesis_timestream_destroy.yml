@@ -46,9 +46,7 @@ jobs:
         - name: Terraform Init
           run: |
             cd ${{ env.PROJECT_DIR }}/terraform
-            terraform init -backend-config="bucket=tfstate-backend-${{ secrets.AWS_ACCOUNT_ID }}-${{ env.ENV }}" \
-            -backend-config="key=terraform.tfstate" \
-            -backend-config="region=${{ secrets.AWS_REGION }}"
+            terraform init
 
         - name: Delete Container images and Terraform State from S3
           run: |
