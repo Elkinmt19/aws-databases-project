@@ -1,7 +1,6 @@
 name: Terraform Destroy with GitHub Actions
 
-on:
-    workflow_dispatch:
+on: workflow_dispatch
       
 
 env:

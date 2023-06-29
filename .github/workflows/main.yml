@@ -1,7 +1,6 @@
 name: Terraform Deploy with GitHub Actions
 
-on:
-  workflow_dispatch:
+on: workflow_dispatch
     #push:
     #    branches:
     #        - deploy   
