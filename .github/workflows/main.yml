@@ -1,9 +1,9 @@
 name: Terraform Deploy with GitHub Actions
 
-on: workflow_dispatch
-    #push:
-    #    branches:
-    #        - deploy   
+on: 
+  workflow_dispatch:
+    branches:
+      - deploy  
 
 env:
   PROJECT_DIR: projects/ecs-kinesis-timestream
