@@ -59,3 +59,4 @@ venv.bak/
 # Terraform
 *.lock.hcl
 .terraform
+terraform.tfstate*
