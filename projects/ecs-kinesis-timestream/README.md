@@ -37,5 +37,27 @@ This section of the documentation mention all the tools an technologies that wer
 
 ## **Setup** :rocket:
 
+In order to replicate and test this project in your own AWS account you have to complete the following steps:
+
+- Fork this repository.
 
 
+- Configure the AWS secrets into your GitHub repository. Go to the `settings` of your forked repository and then go to `Secrets and Variables/actions`.
+
+<p align="center">
+    <img src="assets/imgs/config_secrets_github.png" width="96%"/>
+</p>
+
+- Execute the GitHub Actions pipeline to create and deploy the whole infrastructure. Go to the `actions` section of your forked repository and run the `Deploy ECS + Kinesis + Timestream project` workflow.
+
+<p align="center">
+    <img src="assets/imgs/select_workflow.png" width="35.6%"/>
+    <img src="assets/imgs/run_workflow.png" width="60%"/>
+</p>
+
+- Destroy all the resources created previously using the `Destroy ECS + Kinesis + Timestream project` workflow.
+
+<p align="center">
+    <img src="assets/imgs/select_workflow_destroy.png" width="36.5%"/>
+    <img src="assets/imgs/run_workflow_destroy.png" width="60%"/>
+</p>
