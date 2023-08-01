@@ -1,0 +1,59 @@
+name: Deploy FASTAPI + QLDB project
+
+on: workflow_dispatch
+
+env:
+  PROJECT_DIR: projects/fastapi-qldb
+  PROJECT_NAME: "fastapi-qldb"
+  ENV: "dev"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.4.6
+          terraform_wrapper: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Set up AWS CLI configuration
+        run: |
+          mkdir -p $HOME/.aws
+          echo "[default]" >> $HOME/.aws/credentials
+          echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $HOME/.aws/credentials
+          echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $HOME/.aws/credentials
+          echo "[default]" >> $HOME/.aws/config
+          echo "region=${{ secrets.AWS_REGION }}" >> $HOME/.aws/config
+    
+      - name: Create Backend S3 Bucket for Terraform
+        run: |
+          aws s3api create-bucket \
+          --bucket "${{ vars.TFSTATE_BUCKET }}" \
+          --region ${{ secrets.AWS_REGION }} \
+
+      - name: Terraform Init
+        run: |
+          cd ${{ env.PROJECT_DIR }}/terraform
+          terraform init -reconfigure -backend-config=config/${{ env.ENV }}/backend-${{ env.ENV }}.conf
+
+      - name: Terraform Plan
+        run: |
+          cd ${{ env.PROJECT_DIR }}/terraform
+          terraform apply -var-file=config/${{ env.ENV }}/${{ env.ENV }}.tfvars -auto-approve 
+
+      - name: Terraform Apply
+        run: |
+          cd ${{ env.PROJECT_DIR }}/terraform
+          terraform apply -var-file=config/${{ env.ENV }}/${{ env.ENV }}.tfvars -auto-approve 
