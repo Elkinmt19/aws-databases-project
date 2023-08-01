@@ -1,0 +1,68 @@
+name: Destroy FASTAPI + QLDB project
+
+on: workflow_dispatch
+
+env:
+    PROJECT_DIR: projects/fastapi-qldb
+    PROJECT_NAME: "fastapi-qldb"
+    ENV: "dev"
+        
+
+jobs:
+    destroy:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+            
+        - name: Set up Terraform
+          uses: hashicorp/setup-terraform@v1
+          with:
+            terraform_version: 1.4.6
+            terraform_wrapper: false
+            
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ secrets.AWS_REGION }}
+
+        - name: Set up AWS CLI configuration
+          run: |
+            mkdir -p $HOME/.aws
+            echo "[default]" >> $HOME/.aws/credentials
+            echo "aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $HOME/.aws/credentials
+            echo "aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $HOME/.aws/credentials
+            echo "[default]" >> $HOME/.aws/config
+            echo "region=${{ secrets.AWS_REGION }}" >> $HOME/.aws/config
+    
+        - name: Download Terraform State from S3
+          run: |
+            cd ${{ env.PROJECT_DIR }}/terraform
+            aws s3 cp s3://${{ vars.TFSTATE_BUCKET }}/qldb-project/terraform.tfstate .
+
+        - name: Terraform Init
+          run: |
+            cd ${{ env.PROJECT_DIR }}/terraform
+            terraform init -reconfigure -backend-config=config/${{ env.ENV }}/backend-${{ env.ENV }}.conf
+
+        - name: Terraform destroy
+          id: terraform-destroy
+          run: |
+            cd ${{ env.PROJECT_DIR }}/terraform
+            terraform destroy -var-file=config/${{ env.ENV }}/${{ env.ENV }}.tfvars -auto-approve 
+
+        - name: destroy s3 bucket
+          id: tfstate-bucket-destroy
+          run: |
+            aws s3 rm s3://${{ vars.TFSTATE_BUCKET }} --recursive
+            aws s3 rb s3://${{ vars.TFSTATE_BUCKET }}
+
+        - name: destroy s3 bucket export
+          id: s3-bucket-export-destroy
+          run: |
+            aws s3 rm s3://${{ vars.QLDB_EXPORT_BUCKET }} --recursive
+            aws s3 rb s3://${{ vars.QLDB_EXPORT_BUCKET }}
+
